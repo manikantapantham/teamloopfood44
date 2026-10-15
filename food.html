@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123c2d">
+  <title>FOODBRIDGE — The Food Loop</title>
+  
+  <!-- Chart.js CDN for Graphs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand" onclick="switchPage('home'); return false;">
+      <span class="brand-mark">↻</span>
+      <span>FoodBridge<small>THE FOOD LOOP</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#home" class="nav-item active" data-page="home">Home</a>
+      <a href="#listings" class="nav-item" data-page="listings">Find Food</a>
+      <a href="#dashboard" class="nav-item" data-page="dashboard">Impact & Graphs</a>
+      <a href="#db" class="nav-item" data-page="db">🗄️ Database</a>
+      <a href="#leaderboard" class="nav-item" data-page="leaderboard">Leaderboard & Team</a>
+    </nav>
+    <button class="btn btn-primary" id="openDonate">＋ Donate food</button>
+  </div>
+</header>
+
+<main>
+  <!-- PAGE 1: HOME -->
+  <div id="page-home" class="page-view active">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> LESS WASTE. MORE GOOD.</div>
+          <h1>Good food<br>deserves a <span>second</span> chance.</h1>
+          <p>We connect restaurants, homes, local NGOs, and farms to route fresh surplus food to people and food scraps to animals—before anything goes to waste.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="switchPage('listings')">Explore available food ↗</button>
+            <button class="btn btn-lime" id="openDonate2">Share surplus food ＋</button>
+          </div>
+          <div class="hero-note">
+            <div class="avatars"><span>🥗</span><span>🤝</span><span>🐄</span></div>
+            <span><strong style="color:var(--ink)">Zero-Waste Dual Routing.</strong><br>Fresh meals to shelters · Scraps to farms.</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="sun"></div>
+          <div class="plate">🥙</div>
+          <div class="food-float float-top">
+            <strong><span class="mini-icon">♻️</span>Dual Routing</strong>
+            <span>Humans & Animal Feed</span>
+          </div>
+          <div class="food-float float-bottom">
+            <strong>⏱ Freshness & QR</strong>
+            <span>Live timer & QR verification</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats">
+      <div class="stat"><span class="icon">🍱</span><strong id="statMeals">1,250</strong><span>Meals saved</span></div>
+      <div class="stat"><span class="icon">🌍</span><strong id="statCo2">450 kg</strong><span>CO₂ saved</span></div>
+      <div class="stat"><span class="icon">🐄</span><strong id="statScraps">350 kg</strong><span>Scraps diverted to farms</span></div>
+      <div class="stat"><span class="icon">📍</span><strong id="statPickups">96</strong><span>QR verified pickups</span></div>
+    </section>
+
+    <section class="how">
+      <div class="container">
+        <div class="section-kicker">Zero-Waste Logic</div>
+        <h2>From surplus to shared.</h2>
+        <p class="section-sub">Core innovations powering our hackathon solution.</p>
+        <div class="steps">
+          <article class="step">
+            <div class="step-num">01</div>
+            <h3>📍 Real-Time Geo-Matching</h3>
+            <p>Instantly connects local donors with nearby volunteers and NGOs using live Google Maps routing.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">02</div>
+            <h3>🔀 Zero-Waste Dual Routing</h3>
+            <p>Routes fresh meals to shelters for human consumption and spoiled/food scraps to local farms for animal feed.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">03</div>
+            <h3>📲 Secure QR Verification</h3>
+            <p>Ensures safe, trusted pickup handoffs between donors and volunteers using dynamic QR codes.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PAGE 2: FIND FOOD -->
+  <div id="page-listings" class="page-view">
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Real-Time Geo-Matching</div>
+          <h2>Surplus Food & Scraps Near You</h2>
+          <p class="section-sub">Filter by Human Consumption (NGOs/Shelters) or Animal Feed (Farms). Claim a listing to generate your secure pickup QR code.</p>
+        </div>
+        <div class="listing-tools">
+          <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Human">🥗 Human Food</button>
+            <button class="filter-btn" data-filter="Animal">🐄 Animal Feed</button>
+          </div>
+          <input id="searchInput" class="search" type="search" placeholder="Search food or location…">
+          <button class="btn btn-outline" id="clearSearch">Clear</button>
+        </div>
+      </div>
+      <div class="food-grid" id="foodGrid"></div>
+    </section>
+  </div>
+
+  <!-- PAGE 3: IMPACT DASHBOARD & GRAPHS -->
+  <div id="page-dashboard" class="page-view">
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Feature 04 · Live Analytics</div>
+          <h2>Environmental & Social Impact Dashboard</h2>
+          <p class="section-sub">Real-time tracking of saved meals, carbon footprint reduction, and zero-waste farm diversions.</p>
+        </div>
+        <button class="btn btn-lime" id="openDonate3">＋ Log New Rescue</button>
+      </div>
+
+      <div class="stats" style="margin-bottom: 32px;">
+        <div class="stat"><span class="icon">🍱</span><strong id="impactMeals">1,250</strong><span>Total Meals Saved</span></div>
+        <div class="stat"><span class="icon">🌱</span><strong id="impactCo2">450 kg</strong><span>CO₂ Emissions Prevented</span></div>
+        <div class="stat"><span class="icon">🚜</span><strong id="impactScraps">350 kg</strong><span>Scraps Diverted to Farms</span></div>
+        <div class="stat"><span class="icon">⚖️</span><strong id="impactKg">486 kg</strong><span>Total Human Food Rescued</span></div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>📊 Monthly Meals & CO₂ Saved (Bar Graph)</h3>
+          <p>Tracks growth in community meals alongside carbon reduction.</p>
+          <div class="canvas-wrap"><canvas id="barChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>🥧 Zero-Waste Dual Routing Split (Pie Chart)</h3>
+          <p>Distribution between Human Consumption and Animal Feed.</p>
+          <div class="canvas-wrap"><canvas id="pieChart"></canvas></div>
+        </div>
+        <div class="chart-card full-width">
+          <h3>📈 Weekly Food Rescue Trend (Line Graph)</h3>
+          <p>Weekly rescued volume across Prepared Meals and Farm Scraps.</p>
+          <div class="canvas-wrap"><canvas id="lineChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PAGE 4: LIVE DATABASE VIEWER -->
+  <div id="page-db" class="page-view">
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">PostgreSQL & Cloud Sync</div>
+          <h2>🗄️ Live Database Records (food_listings)</h2>
+          <p class="section-sub">Real-time view of database schema, active records, routing status, and QR verification states.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span class="servings" id="dbStatusBadge">🟢 Vercel Cloud DB Synchronized</span>
+          <button class="btn btn-outline btn-sm" onclick="exportDbJson()">⬇ Export JSON</button>
+        </div>
+      </div>
+      <div class="db-table-wrap">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Food Name</th>
+              <th>Routing</th>
+              <th>Category</th>
+              <th>Qty (kg)</th>
+              <th>Location</th>
+              <th>Donor</th>
+              <th>Status / QR</th>
+            </tr>
+          </thead>
+          <tbody id="dbTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- PAGE 5: LEADERBOARD & TEAM -->
+  <div id="page-leaderboard" class="page-view">
+    <section class="section container">
+      <div class="section-kicker">Gamified Impact & Credits</div>
+      <h2>Top Donors & Project Team</h2>
+      <p class="section-sub">Recognizing top community contributors and the SVCE engineering team behind FoodBridge.</p>
+
+      <div class="leaderboard-grid">
+        <div class="leaderboard-card">
+          <h3>🏆 Gamified Donor Leaderboard</h3>
+          <div class="leader-list" id="leaderList">
+            <div class="leader-item"><span><strong>#1 Annapurna Community Hall</strong> · Kukatpally</span><span class="servings">142 kg saved</span></div>
+            <div class="leader-item"><span><strong>#2 Green Leaf Kitchen</strong> · Madhapur</span><span class="servings">98 kg saved</span></div>
+            <div class="leader-item"><span><strong>#3 Sunshine Grocers</strong> · Gachibowli</span><span class="servings">76 kg saved</span></div>
+            <div class="leader-item"><span><strong>#4 Daily Rise Bakery</strong> · Kondapur</span><span class="servings">54 kg saved</span></div>
+          </div>
+        </div>
+
+        <div class="leaderboard-card team-card">
+          <h3>👨‍💻 SVCE Hackathon Team</h3>
+          <p style="color:#c5d8cc; font-size:0.9rem;">Problem Statement #6: Leftover Food Sharing App</p>
+          <ul class="team-list">
+            <li>🌟 <strong>Manikanta</strong> — Full-Stack & Cloud Architecture</li>
+            <li>🌟 <strong>Abhi</strong> — Backend & Database Integration</li>
+            <li>🌟 <strong>Harshith</strong> — UI/UX & Geo-Matching</li>
+            <li>🌟 <strong>Pawan</strong> — Analytics & Impact Dashboard</li>
+          </ul>
+          <div class="tech-pills">
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Vercel Cloud</span><span>PostgreSQL</span><span>Google Maps</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div><span class="footer-brand">↻ FoodBridge</span> · The Food Loop</div>
+    <div>Built by Team SVCE (Manikanta, Abhi, Harshith, Pawan) · <span id="year"></span></div>
+    <div>Vercel Deployed · Live DB + Annam Dutha AI</div>
+  </div>
+</footer>
+
+<!-- DONATE MODAL -->
+<div class="modal-backdrop" id="donateModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Share surplus food</h2>
+      <button class="close" id="closeModal">×</button>
+    </div>
+    <form id="donateForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="foodName">Food name *</label>
+          <input id="foodName" name="foodName" required maxlength="70" placeholder="e.g. Fresh vegetable meals or Vegetable scraps">
+        </div>
+        <div class="field">
+          <label for="routing">Zero-Waste Routing *</label>
+          <select id="routing" name="routing" required>
+            <option value="Human">🥗 Human Consumption (Shelters/NGOs)</option>
+            <option value="Animal">🐄 Animal Feed (Farms)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="category">Food category</label>
+          <select id="category" name="category">
+            <option>Prepared meals</option>
+            <option>Bakery</option>
+            <option>Fruits & vegetables</option>
+            <option>Packaged food</option>
+            <option>Farm Scraps</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="quantity">Quantity (kg) *</label>
+          <input id="quantity" name="quantity" type="number" min="0.1" max="10000" step="0.1" required placeholder="e.g. 8">
+        </div>
+        <div class="field">
+          <label for="servings">Estimated servings</label>
+          <input id="servings" name="servings" type="number" min="1" max="10000" value="20">
+        </div>
+        <div class="field">
+          <label for="freshHours">Safe pickup window *</label>
+          <select id="freshHours" name="freshHours" required>
+            <option value="1">Within 1 hour</option>
+            <option value="2" selected>Within 2 hours</option>
+            <option value="4">Within 4 hours</option>
+            <option value="6">Within 6 hours</option>
+            <option value="12">Within 12 hours</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pickup">Preferred pickup time</label>
+          <input id="pickup" name="pickup" type="time">
+        </div>
+        <div class="field full">
+          <label for="location">Pickup location *</label>
+          <input id="location" name="location" required maxlength="100" placeholder="Area, landmark or address in Hyderabad">
+          <iframe id="donationMap" class="map-preview" title="Donation pickup location map" loading="lazy" src="https://maps.google.com/maps?q=Hyderabad%2C%20India&t=&z=12&ie=UTF8&iwloc=&output=embed"></iframe>
+          <div class="map-actions">
+            <a id="openLocationMap" class="btn btn-outline btn-sm" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a>
+          </div>
+        </div>
+        <div class="field full">
+          <label for="donor">Donor / organization *</label>
+          <input id="donor" name="donor" required maxlength="70" placeholder="Your name, restaurant, or household">
+        </div>
+        <div class="field full">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" maxlength="250" placeholder="Allergens, storage instructions, packaging…"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="cancelModal">Cancel</button>
+        <button class="btn btn-primary" type="submit">Publish donation ↗</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- QR VERIFICATION MODAL -->
+<div class="modal-backdrop" id="qrModal" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width: 420px; text-align: center;">
+    <div class="modal-head">
+      <h2>📲 Secure QR Verification</h2>
+      <button class="close" id="closeQrModal">×</button>
+    </div>
+    <p style="color:var(--muted); font-size:0.9rem; margin-top:0;">Show this dynamic QR code to the donor during pickup to verify handoff.</p>
+    <div class="qr-box">
+      <img id="qrImage" src="" alt="Pickup Verification QR Code" width="200" height="200">
+    </div>
+    <p id="qrDetails" style="font-weight:700; color:var(--green-dark); margin:14px 0 6px;"></p>
+    <p id="qrCodeId" style="font-size:0.8rem; color:var(--muted); margin:0 0 18px;"></p>
+    <button class="btn btn-primary" style="width:100%" id="doneQrBtn">✓ Done</button>
+  </div>
+</div>
+
+<!-- ANNAM DUTHA AI CHATBOT -->
+<button class="annam-fab" id="annamToggle" aria-label="Open Annam Dutha AI Assistant">
+  <span class="annam-fab-icon">🤖</span>
+  <div class="annam-fab-text">
+    <strong>Annam Dutha</strong>
+    <small>AI Rescue Assistant</small>
+  </div>
+</button>
+
+<div class="annam-window" id="annamWindow" aria-hidden="true">
+  <div class="annam-header">
+    <div class="annam-title">
+      <span class="annam-avatar">🌾</span>
+      <div>
+        <strong>Annam Dutha AI</strong>
+        <small>🟢 Online · FoodBridge Smart Bot</small>
+      </div>
+    </div>
+    <button class="annam-close" id="annamClose" aria-label="Close chat">×</button>
+  </div>
+  <div class="annam-messages" id="annamMessages">
+    <div class="annam-msg bot">
+      Namaste! 🙏 I am <strong>Annam Dutha</strong>, your AI Food Rescue Assistant. How can I help you today?
+    </div>
+  </div>
+  <div class="annam-chips">
+    <button type="button" class="annam-chip" onclick="askAnnam('Nearby available food')">📍 Nearby Food</button>
+    <button type="button" class="annam-chip" onclick="askAnnam('Explain Zero-Waste Dual Routing')">🔀 Dual Routing</button>
+    <button type="button" class="annam-chip" onclick="askAnnam('Show live impact metrics')">📊 Impact Stats</button>
+    <button type="button" class="annam-chip" onclick="askAnnam('How does QR verification work?')">📲 QR Verify</button>
+  </div>
+  <form class="annam-input-bar" id="annamForm">
+    <input type="text" id="annamInput" placeholder="Ask Annam Dutha about food, routing, QR, or DB…" autocomplete="off" required>
+    <button type="submit" class="btn btn-primary btn-sm">Send</button>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<!-- JavaScript Link -->
+<script src="script.js"></script>
+</body>
+</html>
